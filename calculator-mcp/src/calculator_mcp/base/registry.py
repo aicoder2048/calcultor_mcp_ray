@@ -2,7 +2,7 @@
 运算工具注册器
 负责将运算操作注册为MCP工具
 """
-from typing import Dict, Type
+from typing import Dict, Type, List
 from .operation import BaseOperation
 from .models import OperationResult
 from fastmcp import FastMCP
@@ -62,12 +62,14 @@ async def operation_tool({params_str}):
             local_vars = {
                 'input_model': input_model,
                 'operation': operation,
-                'OperationResult': OperationResult
+                'OperationResult': OperationResult,
+                'List': List
             }
             global_vars = {
                 'input_model': input_model,
                 'operation': operation,
-                'OperationResult': OperationResult
+                'OperationResult': OperationResult,
+                'List': List
             }
             exec(func_code, global_vars, local_vars)
             operation_tool = local_vars['operation_tool']

@@ -14,6 +14,7 @@ from .operations import (
     SquareRootOperation,
     NthRootOperation,
     CubeOperation,
+    AverageOperation,
 )
 
 
@@ -39,6 +40,7 @@ def create_calculator_server() -> FastMCP:
         SquareRootOperation,
         NthRootOperation,
         CubeOperation,
+        AverageOperation,
     ]
     
     for operation_class in operations:

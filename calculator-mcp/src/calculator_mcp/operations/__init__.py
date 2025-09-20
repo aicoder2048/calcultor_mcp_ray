@@ -9,6 +9,7 @@ from .square import SquareOperation
 from .square_root import SquareRootOperation
 from .nth_root import NthRootOperation
 from .cube import CubeOperation
+from .average import AverageOperation
 
 __all__ = [
     "AdditionOperation",
@@ -18,5 +19,6 @@ __all__ = [
     "SquareOperation",
     "SquareRootOperation",
     "NthRootOperation",
-    "CubeOperation"
+    "CubeOperation",
+    "AverageOperation"
 ]

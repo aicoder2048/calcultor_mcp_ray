@@ -3,7 +3,7 @@
 定义所有输入输出模型和错误类型
 """
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 
 
 class BinaryOperationInput(BaseModel):
@@ -21,6 +21,11 @@ class NthRootInput(BaseModel):
     """N次方根运算输入模型"""
     value: float = Field(..., description="被开方数")
     n: float = Field(2, description="根的次数，默认为2（平方根）")
+
+
+class AverageInput(BaseModel):
+    """平均数运算输入模型"""
+    values: List[float] = Field(..., description="数值列表", min_length=1)
 
 
 class OperationResult(BaseModel):
