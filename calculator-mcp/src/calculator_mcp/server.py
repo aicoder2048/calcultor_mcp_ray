@@ -5,6 +5,7 @@
 import asyncio
 from fastmcp import FastMCP
 from .base.registry import OperationRegistry
+from .base.prompt_registry import PromptRegistry
 from .operations import (
     AdditionOperation,
     SubtractionOperation,
@@ -16,6 +17,9 @@ from .operations import (
     CubeOperation,
     AverageOperation,
 )
+from .prompts import (
+    MultiplicationTablePrompt,
+)
 
 
 def create_calculator_server() -> FastMCP:
@@ -23,8 +27,8 @@ def create_calculator_server() -> FastMCP:
     # 初始化FastMCP服务器
     mcp = FastMCP(
         name="calculator-mcp",
-        version="1.0.0",
-        instructions="Modular calculator MCP server with comprehensive math operations"
+        version="2.0.0",
+        instructions="Modular calculator MCP server with comprehensive math operations and interactive prompts"
     )
     
     # 创建运算注册器
@@ -45,6 +49,17 @@ def create_calculator_server() -> FastMCP:
     
     for operation_class in operations:
         registry.register(operation_class)
+    
+    # 创建Prompt注册器
+    prompt_registry = PromptRegistry(mcp)
+    
+    # 注册所有Prompt操作
+    prompts = [
+        MultiplicationTablePrompt,
+    ]
+    
+    for prompt_class in prompts:
+        prompt_registry.register(prompt_class)
     
     return mcp
 

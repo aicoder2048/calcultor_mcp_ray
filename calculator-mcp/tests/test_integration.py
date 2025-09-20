@@ -14,7 +14,7 @@ class TestServerIntegration:
         """测试服务器创建"""
         assert self.server is not None
         assert self.server.name == "calculator-mcp"
-        assert self.server.version == "1.0.0"
+        assert self.server.version == "2.0.0"
     
     def test_all_operations_available(self):
         """测试所有运算操作是否可用"""
@@ -25,10 +25,10 @@ class TestServerIntegration:
         elif hasattr(self.server, 'tools'):
             tool_names = [tool.name for tool in self.server.tools]
         
-        # 预期的8个运算工具
+        # 预期的9个运算工具
         expected_tools = [
             "add", "subtract", "multiply", "divide",
-            "square", "square_root", "nth_root", "cube"
+            "square", "square_root", "nth_root", "cube", "average"
         ]
         
         # 检查是否有工具被注册（具体实现可能因FastMCP版本而异）
@@ -74,3 +74,52 @@ class TestServerIntegration:
         sqrt_result = await sqrt_op.execute(UnaryOperationInput(value=9))
         assert sqrt_result.success is True
         assert sqrt_result.result == 3.0
+    
+    @pytest.mark.asyncio
+    async def test_prompt_functionality_simulation(self):
+        """模拟测试Prompt功能"""
+        from calculator_mcp.prompts import MultiplicationTablePrompt, MultiplicationTableArguments
+        
+        # 测试Prompt类能否正常实例化和执行
+        prompt = MultiplicationTablePrompt()
+        
+        # 验证Prompt对象创建成功
+        assert prompt.name == "multiplication_table"
+        assert "乘法口诀表" in prompt.description
+        
+        # 测试实际Prompt生成功能
+        args = MultiplicationTableArguments(
+            size=3,
+            start_number=1,
+            language="zh",
+            format="table"
+        )
+        
+        # 测试Prompt生成
+        result = await prompt.generate(args)
+        assert result.success is True
+        assert "乘法口诀表" in result.content
+        assert "multiplication工具" in result.content
+        assert result.prompt_name == "multiplication_table"
+        
+        # 测试英文Prompt生成
+        args_en = MultiplicationTableArguments(
+            size=2,
+            start_number=5,
+            language="en",
+            format="list"
+        )
+        
+        result_en = await prompt.generate(args_en)
+        assert result_en.success is True
+        assert "Multiplication Table" in result_en.content
+        assert "multiplication tool" in result_en.content
+    
+    def test_server_includes_prompts(self):
+        """测试服务器包含Prompt功能"""
+        # 验证服务器包含prompt相关配置
+        assert self.server is not None
+        
+        # 验证服务器描述包含prompt相关信息
+        if hasattr(self.server, 'instructions'):
+            assert "prompts" in self.server.instructions or "interactive" in self.server.instructions

@@ -1,7 +1,7 @@
 {
   "name": "calculator-mcp",
-  "version": "1.0.0",
-  "description": "Calculator MCP Server with comprehensive math operations",
+  "version": "1.6.0",
+  "description": "Calculator MCP Server with comprehensive math and statistical operations",
   "main": "src/calculator_mcp/server.py",
   "requirements": [
     "fastmcp>=2.0.0",

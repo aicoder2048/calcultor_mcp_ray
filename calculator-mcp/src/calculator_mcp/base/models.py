@@ -3,7 +3,7 @@
 定义所有输入输出模型和错误类型
 """
 from pydantic import BaseModel, Field
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 
 
 class BinaryOperationInput(BaseModel):
@@ -34,6 +34,15 @@ class OperationResult(BaseModel):
     result: Optional[float] = Field(None, description="运算结果")
     error_message: Optional[str] = Field(None, description="错误信息")
     operation_name: str = Field(..., description="运算名称")
+
+
+class PromptResult(BaseModel):
+    """Prompt结果模型"""
+    success: bool = Field(..., description="生成是否成功")
+    content: str = Field("", description="生成的内容")
+    error_message: Optional[str] = Field(None, description="错误信息")
+    prompt_name: str = Field(..., description="Prompt名称")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="额外元数据")
 
 
 class CalculatorError(Exception):
