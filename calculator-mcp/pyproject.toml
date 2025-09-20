@@ -1,0 +1,23 @@
+[project]
+name = "calculator-mcp"
+version = "1.0.0"
+description = "A modular calculator MCP server for Claude Code"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastmcp>=2.0.0",
+    "pydantic>=2.10.6",
+]
+
+[project.scripts]
+calculator-mcp = "calculator_mcp.server:main"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.21.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

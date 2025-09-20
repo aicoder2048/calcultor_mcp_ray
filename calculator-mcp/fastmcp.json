@@ -1,0 +1,11 @@
+{
+  "name": "calculator-mcp",
+  "version": "1.0.0",
+  "description": "Calculator MCP Server with comprehensive math operations",
+  "main": "src/calculator_mcp/server.py",
+  "requirements": [
+    "fastmcp>=2.0.0",
+    "pydantic>=2.10.0"
+  ],
+  "python": ">=3.12"
+}

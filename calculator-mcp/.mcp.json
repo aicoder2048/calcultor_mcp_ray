@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "calculator-mcp": {
+      "command": "uv",
+      "args": ["run", "python", "-m", "calculator_mcp.server"],
+      "env": {
+        "PYTHONPATH": "/Users/szou/Python/Playground/Raymond/calculator-mcp/src"
+      },
+      "cwd": "/Users/szou/Python/Playground/Raymond/calculator-mcp"
+    }
+  }
+}

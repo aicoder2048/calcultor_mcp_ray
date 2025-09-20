@@ -1,0 +1,71 @@
+"""
+除法运算模块  
+实现两个数的除法运算，包含除零错误处理
+"""
+from typing import Type
+from pydantic import BaseModel
+from ..base.operation import BaseOperation
+from ..base.models import BinaryOperationInput, OperationResult
+from ..utils.validators import validate_finite_number, validate_non_zero
+from ..utils.formatters import format_result
+
+
+class DivisionOperation(BaseOperation):
+    """除法运算实现"""
+    
+    @property
+    def name(self) -> str:
+        return "divide"
+    
+    @property
+    def description(self) -> str:
+        return "执行除法运算：返回两个数的商 (a ÷ b)"
+    
+    @property
+    def input_model(self) -> Type[BaseModel]:
+        return BinaryOperationInput
+    
+    def validate_input(self, input_data: BinaryOperationInput) -> bool:
+        """验证输入数据"""
+        return (validate_finite_number(input_data.a) and 
+                validate_finite_number(input_data.b) and
+                validate_non_zero(input_data.b))
+    
+    async def execute(self, input_data: BinaryOperationInput) -> OperationResult:
+        """执行除法运算"""
+        # 检查除零错误
+        if input_data.b == 0:
+            return OperationResult(
+                success=False,
+                error_message="错误：除数不能为零",
+                operation_name=self.name
+            )
+        
+        if not self.validate_input(input_data):
+            return OperationResult(
+                success=False,
+                error_message="输入包含无效数值",
+                operation_name=self.name
+            )
+        
+        try:
+            result = input_data.a / input_data.b
+            formatted_result = format_result(result)
+            
+            return OperationResult(
+                success=True,
+                result=formatted_result,
+                operation_name=self.name
+            )
+        except ZeroDivisionError:
+            return OperationResult(
+                success=False,
+                error_message="错误：除数不能为零",
+                operation_name=self.name
+            )
+        except Exception as e:
+            return OperationResult(
+                success=False,
+                error_message=f"除法运算失败: {str(e)}",
+                operation_name=self.name
+            )
