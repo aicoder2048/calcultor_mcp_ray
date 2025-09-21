@@ -19,6 +19,7 @@ from .operations import (
 )
 from .prompts import (
     MultiplicationTablePrompt,
+    HealthMetricsPrompt,
 )
 
 
@@ -56,6 +57,7 @@ def create_calculator_server() -> FastMCP:
     # 注册所有Prompt操作
     prompts = [
         MultiplicationTablePrompt,
+        HealthMetricsPrompt,
     ]
     
     for prompt_class in prompts:

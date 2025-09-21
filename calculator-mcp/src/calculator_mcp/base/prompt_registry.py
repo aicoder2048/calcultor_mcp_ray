@@ -2,7 +2,7 @@
 Prompt注册器
 负责将Prompt操作注册为MCP prompts
 """
-from typing import Dict, Type, List
+from typing import Dict, Type, List, Optional, Union, get_origin, get_args
 from ..prompts.base_prompt import BasePrompt
 from .models import PromptResult
 from fastmcp import FastMCP
@@ -34,20 +34,57 @@ class PromptRegistry:
             for field_name, field_info in fields.items():
                 # 获取类型注解
                 field_type = field_info.annotation
-                if hasattr(field_type, '__name__'):
+                
+                # 处理Optional类型
+                origin = get_origin(field_type)
+                if origin is Union:
+                    # 这是一个Union类型，检查是否是Optional（即Union[X, None]）
+                    args = get_args(field_type)
+                    if len(args) == 2 and type(None) in args:
+                        # 这是Optional[X]
+                        inner_type = args[0] if args[1] is type(None) else args[1]
+                        if hasattr(inner_type, '__name__'):
+                            type_name = f"Optional[{inner_type.__name__}]"
+                        else:
+                            type_name = f"Optional[{str(inner_type)}]"
+                    else:
+                        type_name = str(field_type)
+                elif hasattr(field_type, '__name__'):
                     type_name = field_type.__name__
                 else:
                     type_name = str(field_type)
-                params.append(f"{field_name}: {type_name}")
+                
+                # 处理默认值
+                if field_info.is_required():
+                    params.append(f"{field_name}: {type_name}")
+                else:
+                    default_value = field_info.get_default()
+                    if default_value is None:
+                        params.append(f"{field_name}: {type_name} = None")
+                    elif isinstance(default_value, str):
+                        params.append(f"{field_name}: {type_name} = '{default_value}'")
+                    else:
+                        params.append(f"{field_name}: {type_name} = {default_value}")
             
             params_str = ', '.join(params)
-            kwargs_str = ', '.join(f"'{name}': {name}" for name in field_names)
+            
+            # 创建kwargs字符串 - 需要处理可选参数和必需参数
+            kwargs_creation = []
+            for field_name, field_info in fields.items():
+                if field_info.is_required():
+                    # 必需参数直接添加
+                    kwargs_creation.append(f"        kwargs['{field_name}'] = {field_name}")
+                else:
+                    # 可选参数只在非None时添加
+                    kwargs_creation.append(f"        if {field_name} is not None: kwargs['{field_name}'] = {field_name}")
+            kwargs_lines = '\n'.join(kwargs_creation) if kwargs_creation else "        pass"
             
             # 动态创建函数代码
             func_code = f"""
 async def prompt_function({params_str}):
     try:
-        kwargs = {{{kwargs_str}}}
+        kwargs = {{}}
+{kwargs_lines}
         input_data = input_model(**kwargs)
         return await prompt.generate(input_data)
     except Exception as e:
@@ -59,18 +96,23 @@ async def prompt_function({params_str}):
         )
 """
             
+            # 调试：打印生成的代码
+            # print(f"Generated function for {prompt.name}:\n{func_code}")
+            
             # 执行代码创建函数
             local_vars = {
                 'input_model': input_model,
                 'prompt': prompt,
                 'PromptResult': PromptResult,
-                'List': List
+                'List': List,
+                'Optional': Optional
             }
             global_vars = {
                 'input_model': input_model,
                 'prompt': prompt,
                 'PromptResult': PromptResult,
-                'List': List
+                'List': List,
+                'Optional': Optional
             }
             exec(func_code, global_vars, local_vars)
             prompt_function = local_vars['prompt_function']
