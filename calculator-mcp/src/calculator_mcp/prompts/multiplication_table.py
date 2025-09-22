@@ -10,10 +10,26 @@ from ..base.models import PromptResult
 
 class MultiplicationTableArguments(BaseModel):
     """乘法口诀表参数模型"""
-    size: int = Field(..., description="口诀表大小", ge=1, le=20)
-    start_number: int = Field(1, description="起始数字", ge=-100, le=100)
-    language: str = Field("zh", description="输出语言: zh(中文) 或 en(英文)")
-    format: str = Field("table", description="输出格式: table(表格) 或 list(列表)")
+    size: int = Field(
+        ..., 
+        description="口诀表大小（1-20，推荐3-12）- 生成N×N的乘法口诀表，如size=9生成9×9口诀表", 
+        ge=1, 
+        le=20
+    )
+    start_number: int = Field(
+        1, 
+        description="起始数字（-100到100，默认1）- 口诀表的第一个数字，如start_number=2则从2开始：2×2, 2×3...", 
+        ge=-100, 
+        le=100
+    )
+    language: str = Field(
+        "zh", 
+        description="输出语言选项: zh(中文，默认) 或 en(英文) - 控制生成的口诀表使用中文还是英文格式"
+    )
+    format: str = Field(
+        "table", 
+        description="输出格式选项: table(表格布局，默认) 或 list(列表形式) - table显示为表格，list显示为算式列表"
+    )
     
     @field_validator('language')
     @classmethod
@@ -39,7 +55,13 @@ class MultiplicationTablePrompt(BasePrompt):
     
     @property
     def description(self) -> str:
-        return "生成自定义大小和起始数字的乘法口诀表，支持中英文输出和多种格式"
+        return """生成自定义大小和起始数字的乘法口诀表，支持中英文输出和多种格式
+
+Args:
+    size: 口诀表大小（1-20，推荐3-12）- 生成N×N的乘法口诀表，如size=9生成9×9口诀表
+    start_number: 起始数字（-100到100，默认1）- 口诀表的第一个数字，如start_number=2则从2开始：2×2, 2×3...
+    language: 输出语言选项: zh(中文，默认) 或 en(英文) - 控制生成的口诀表使用中文还是英文格式
+    format: 输出格式选项: table(表格布局，默认) 或 list(列表形式) - table显示为表格，list显示为算式列表"""
     
     @property
     def arguments_schema(self) -> Type[BaseModel]:

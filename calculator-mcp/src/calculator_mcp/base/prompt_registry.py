@@ -29,8 +29,10 @@ class PromptRegistry:
             fields = input_model.model_fields
             field_names = list(fields.keys())
             
-            # 创建参数列表
+            # 创建参数列表和docstring的Args部分
             params = []
+            docstring_args = []
+            
             for field_name, field_info in fields.items():
                 # 获取类型注解
                 field_type = field_info.annotation
@@ -65,8 +67,19 @@ class PromptRegistry:
                         params.append(f"{field_name}: {type_name} = '{default_value}'")
                     else:
                         params.append(f"{field_name}: {type_name} = {default_value}")
+                
+                # 为docstring创建参数描述
+                arg_description = field_info.description or f"{field_name} parameter"
+                docstring_args.append(f"        {field_name}: {arg_description}")
             
             params_str = ', '.join(params)
+            
+            # 创建完整的docstring
+            docstring = f'''"""{prompt.description}
+    
+    Args:
+{chr(10).join(docstring_args)}
+    """'''
             
             # 创建kwargs字符串 - 需要处理可选参数和必需参数
             kwargs_creation = []
@@ -79,9 +92,10 @@ class PromptRegistry:
                     kwargs_creation.append(f"        if {field_name} is not None: kwargs['{field_name}'] = {field_name}")
             kwargs_lines = '\n'.join(kwargs_creation) if kwargs_creation else "        pass"
             
-            # 动态创建函数代码
+            # 动态创建函数代码，包含docstring
             func_code = f"""
 async def prompt_function({params_str}):
+    {docstring}
     try:
         kwargs = {{}}
 {kwargs_lines}

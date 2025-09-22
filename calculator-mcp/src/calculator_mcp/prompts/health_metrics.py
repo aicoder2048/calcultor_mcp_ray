@@ -60,7 +60,16 @@ class HealthMetricsPrompt(BasePrompt):
     
     @property
     def description(self) -> str:
-        return "计算BMI、基础代谢率、每日热量需求等健康指标，提供个性化健康建议"
+        return """计算BMI、基础代谢率、每日热量需求等健康指标，提供个性化健康建议
+
+Args:
+    height: 身高（厘米或英寸）- 根据unit_system确定单位
+    weight: 体重（公斤或磅）- 根据unit_system确定单位
+    age: 年龄（用于BMR计算，可选）- 1-120岁
+    gender: 性别: male(男) 或 female(女) - 用于BMR计算
+    activity_level: 活动水平: sedentary(久坐), lightly_active(轻度活动), moderately_active(中度活动), very_active(高度活动), extra_active(极高活动)
+    unit_system: 单位制: metric(公制) 或 imperial(英制)
+    language: 输出语言: zh(中文) 或 en(英文)"""
     
     @property
     def arguments_schema(self) -> Type[BaseModel]:

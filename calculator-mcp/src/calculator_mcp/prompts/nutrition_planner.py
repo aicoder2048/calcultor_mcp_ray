@@ -99,7 +99,20 @@ class NutritionPlannerPrompt(BasePrompt):
     
     @property
     def description(self) -> str:
-        return "智能营养配餐计算器，根据个人情况计算营养需求，制定科学的饮食计划和配餐方案"
+        return """智能营养配餐计算器，根据个人情况计算营养需求，制定科学的饮食计划和配餐方案
+
+Args:
+    height: 身高（厘米）- 100-250cm
+    weight: 体重（公斤）- 30-200kg  
+    age: 年龄 - 1-120岁
+    gender: 性别: male(男) 或 female(女)
+    activity_level: 活动水平: sedentary(久坐), lightly_active(轻度活动), moderately_active(中度活动), very_active(高度活动), extra_active(极高活动)
+    goal: 饮食目标: maintain(维持), lose_weight(减重), gain_weight(增重), gain_muscle(增肌)
+    dietary_restrictions: 饮食限制（可选）: vegetarian(素食), vegan(纯素), gluten_free(无麸质), dairy_free(无乳制品), low_sodium(低钠), diabetic_friendly(糖尿病友好)
+    target_weight: 目标体重（可选）- 用于减重/增重计划
+    timeline_weeks: 时间目标（可选）- 多少周内达到目标
+    meals_per_day: 每日餐次: 3, 4, 5, 6 - 包括正餐和加餐
+    language: 输出语言: zh(中文) 或 en(英文)"""
     
     @property
     def arguments_schema(self) -> Type[BaseModel]:
