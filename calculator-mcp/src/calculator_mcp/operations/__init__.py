@@ -10,6 +10,16 @@ from .square_root import SquareRootOperation
 from .nth_root import NthRootOperation
 from .cube import CubeOperation
 from .average import AverageOperation
+from .power import PowerOperation
+from .logarithm import LogarithmOperation
+from .absolute import AbsoluteOperation
+from .percentage import PercentageOperation
+from .median import MedianOperation
+from .standard_deviation import StandardDeviationOperation
+from .variance import VarianceOperation
+from .modulo import ModuloOperation
+from .gcd import GCDOperation
+from .lcm import LCMOperation
 
 __all__ = [
     "AdditionOperation",
@@ -20,5 +30,15 @@ __all__ = [
     "SquareRootOperation",
     "NthRootOperation",
     "CubeOperation",
-    "AverageOperation"
+    "AverageOperation",
+    "PowerOperation",
+    "LogarithmOperation",
+    "AbsoluteOperation",
+    "PercentageOperation",
+    "MedianOperation",
+    "StandardDeviationOperation",
+    "VarianceOperation",
+    "ModuloOperation",
+    "GCDOperation",
+    "LCMOperation"
 ]

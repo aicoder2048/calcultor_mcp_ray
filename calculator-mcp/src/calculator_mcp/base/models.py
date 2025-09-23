@@ -34,6 +34,7 @@ class OperationResult(BaseModel):
     result: Optional[float] = Field(None, description="运算结果")
     error_message: Optional[str] = Field(None, description="错误信息")
     operation_name: str = Field(..., description="运算名称")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="额外元数据")
 
 
 class PromptResult(BaseModel):

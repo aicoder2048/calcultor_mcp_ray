@@ -16,6 +16,16 @@ from .operations import (
     NthRootOperation,
     CubeOperation,
     AverageOperation,
+    PowerOperation,
+    LogarithmOperation,
+    AbsoluteOperation,
+    PercentageOperation,
+    MedianOperation,
+    StandardDeviationOperation,
+    VarianceOperation,
+    ModuloOperation,
+    GCDOperation,
+    LCMOperation,
 )
 from .prompts import (
     MultiplicationTablePrompt,
@@ -29,7 +39,7 @@ def create_calculator_server() -> FastMCP:
     # 初始化FastMCP服务器
     mcp = FastMCP(
         name="calculator-mcp",
-        version="2.0.0",
+        version="3.0.0",
         instructions="Modular calculator MCP server with comprehensive math operations and interactive prompts"
     )
     
@@ -47,6 +57,16 @@ def create_calculator_server() -> FastMCP:
         NthRootOperation,
         CubeOperation,
         AverageOperation,
+        PowerOperation,
+        LogarithmOperation,
+        AbsoluteOperation,
+        PercentageOperation,
+        MedianOperation,
+        StandardDeviationOperation,
+        VarianceOperation,
+        ModuloOperation,
+        GCDOperation,
+        LCMOperation,
     ]
     
     for operation_class in operations:
