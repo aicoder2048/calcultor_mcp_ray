@@ -14,7 +14,7 @@ class TestServerIntegration:
         """测试服务器创建"""
         assert self.server is not None
         assert self.server.name == "calculator-mcp"
-        assert self.server.version == "3.0.0"
+        assert self.server.version == "4.0.0"
     
     def test_all_operations_available(self):
         """测试所有运算操作是否可用"""

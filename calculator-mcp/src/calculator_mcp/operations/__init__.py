@@ -20,6 +20,16 @@ from .variance import VarianceOperation
 from .modulo import ModuloOperation
 from .gcd import GCDOperation
 from .lcm import LCMOperation
+from .sine import SineOperation
+from .cosine import CosineOperation
+from .tangent import TangentOperation
+from .simple_interest import SimpleInterestOperation
+from .compound_interest import CompoundInterestOperation
+from .discount import DiscountOperation
+from .factorial import FactorialOperation
+from .permutation import PermutationOperation
+from .combination import CombinationOperation
+from .prime_check import PrimeCheckOperation
 
 __all__ = [
     "AdditionOperation",
@@ -40,5 +50,15 @@ __all__ = [
     "VarianceOperation",
     "ModuloOperation",
     "GCDOperation",
-    "LCMOperation"
+    "LCMOperation",
+    "SineOperation",
+    "CosineOperation",
+    "TangentOperation",
+    "SimpleInterestOperation",
+    "CompoundInterestOperation",
+    "DiscountOperation",
+    "FactorialOperation",
+    "PermutationOperation",
+    "CombinationOperation",
+    "PrimeCheckOperation"
 ]
