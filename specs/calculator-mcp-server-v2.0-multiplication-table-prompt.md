@@ -9,9 +9,12 @@
 4. **格式化输出**: 提供结构化的乘法口诀表格式，支持中英文输出
 
 ### 功能统计
-- **运算工具总数**: 9个（保持不变）
-- **Prompt功能总数**: 1个（新增乘法口诀表）
-- **支持运算类型**: 基础四则运算 + 幂运算 + 根运算 + 统计运算 + **结构化输出**
+- **运算工具总数**: 29个（V4.0最新）
+  - V1.0-V1.6: 9个基础工具
+  - V3.0: 新增10个（幂、对数、统计、数论）
+  - V4.0: 新增10个（三角函数、财务、组合数学）
+- **Prompt功能总数**: 3个（乘法口诀表、健康指标、营养规划）
+- **支持运算类型**: 基础四则运算 + 幂运算 + 根运算 + 统计运算 + **三角函数** + **财务计算** + **组合数学** + **结构化输出**
 - **代码行数**: 所有模块均控制在200行以内
 
 ## Problem Statement and Objectives
@@ -31,6 +34,23 @@
 3. **工具集成利用**：复用现有multiplication tool确保计算准确性
 4. **输出格式优化**：提供清晰、易读的乘法口诀表格式
 5. **架构兼容性**：在保持现有工具功能的基础上扩展prompt能力
+
+### V4.0 (当前版本) 工具清单
+**三角函数类 (3个)**:
+- `sine` - 正弦函数，支持角度/弧度
+- `cosine` - 余弦函数，支持角度/弧度
+- `tangent` - 正切函数，支持角度/弧度
+
+**财务计算类 (3个)**:
+- `simple_interest` - 单利计算 (I = P × r × t)
+- `compound_interest` - 复利计算 (A = P(1+r/n)^(nt))
+- `discount` - 折扣计算
+
+**组合数学类 (4个)**:
+- `factorial` - 阶乘运算 (n!)
+- `permutation` - 排列数 (P(n,r))
+- `combination` - 组合数 (C(n,r))
+- `prime_check` - 质数判断
 
 ## Technical Approach and Architecture
 
@@ -736,3 +756,126 @@ V2.0版本为用户提供了：
 - **工具协作**: 展示了MCP工具间有效协作的模式
 
 V2.0版本标志着Calculator MCP Server向智能内容生成平台的成功转型，为用户提供了从基础计算到结构化内容生成的完整解决方案。
+
+## V4.0 完整工具参考表
+
+### 所有可用工具 (29个)
+
+#### 基础运算 (9个)
+| 工具ID | 名称 | 参数 | 说明 | 版本 |
+|--------|------|------|------|------|
+| `add` | 加法 | a, b | a + b | V1.0 |
+| `subtract` | 减法 | a, b | a - b | V1.0 |
+| `multiply` | 乘法 | a, b | a × b | V1.0 |
+| `divide` | 除法 | a, b | a ÷ b | V1.0 |
+| `square` | 平方 | value | value² | V1.0 |
+| `cube` | 立方 | value | value³ | V1.0 |
+| `square_root` | 平方根 | value | √value | V1.0 |
+| `nth_root` | n次方根 | value, n | ⁿ√value | V1.0 |
+| `average` | 平均数 | values[] | Σvalues/n | V1.6 |
+
+#### 幂运算与对数 (2个)
+| 工具ID | 名称 | 参数 | 说明 | 版本 |
+|--------|------|------|------|------|
+| `power` | 幂运算 | base, exponent | base^exponent | V3.0 |
+| `logarithm` | 对数 | number, base | log_base(number) | V3.0 |
+
+#### 三角函数 (3个) ✨ NEW
+| 工具ID | 名称 | 参数 | 说明 | 版本 |
+|--------|------|------|------|------|
+| `sine` | 正弦 | angle, unit | sin(angle), 支持度/弧度 | V4.0 |
+| `cosine` | 余弦 | angle, unit | cos(angle), 支持度/弧度 | V4.0 |
+| `tangent` | 正切 | angle, unit | tan(angle), 支持度/弧度 | V4.0 |
+
+#### 统计运算 (5个)
+| 工具ID | 名称 | 参数 | 说明 | 版本 |
+|--------|------|------|------|------|
+| `median` | 中位数 | numbers[] | 中位数+四分位数 | V3.0 |
+| `standard_deviation` | 标准差 | numbers[], is_sample | 样本/总体标准差 | V3.0 |
+| `variance` | 方差 | numbers[], is_sample | 样本/总体方差 | V3.0 |
+| `absolute` | 绝对值 | value | \|value\| | V3.0 |
+| `percentage` | 百分比 | value, reference, type | 5种百分比计算 | V3.0 |
+
+#### 数论运算 (3个)
+| 工具ID | 名称 | 参数 | 说明 | 版本 |
+|--------|------|------|------|------|
+| `modulo` | 取模 | dividend, divisor | a mod b | V3.0 |
+| `gcd` | 最大公约数 | numbers[] | GCD(n1,n2,...) | V3.0 |
+| `lcm` | 最小公倍数 | numbers[] | LCM(n1,n2,...) | V3.0 |
+
+#### 财务计算 (3个) ✨ NEW
+| 工具ID | 名称 | 参数 | 说明 | 版本 |
+|--------|------|------|------|------|
+| `simple_interest` | 单利 | principal, rate, time | I = P×r×t | V4.0 |
+| `compound_interest` | 复利 | principal, rate, time, frequency | A = P(1+r/n)^(nt) | V4.0 |
+| `discount` | 折扣 | original_price, discount_percent | 折扣价格计算 | V4.0 |
+
+#### 组合数学 (4个) ✨ NEW
+| 工具ID | 名称 | 参数 | 说明 | 版本 |
+|--------|------|------|------|------|
+| `factorial` | 阶乘 | n | n! (n≤170) | V4.0 |
+| `permutation` | 排列 | n, r | P(n,r) = n!/(n-r)! | V4.0 |
+| `combination` | 组合 | n, r | C(n,r) = n!/(r!(n-r)!) | V4.0 |
+| `prime_check` | 质数判断 | number | 判断是否为质数(≤10^15) | V4.0 |
+
+### Prompt功能 (3个)
+
+| Prompt ID | 名称 | 参数 | 说明 | 版本 |
+|-----------|------|------|------|------|
+| `multiplication_table` | 乘法口诀表 | size, start_number, language, format | 生成自定义乘法表 | V2.0 |
+| `health_metrics` | 健康指标 | height, weight, age, gender | BMI计算与健康评估 | V2.0 |
+| `nutrition_planner` | 营养规划 | daily_calories, meal_count | 营养餐单规划 | V2.0 |
+
+### 使用示例速查
+
+**三角函数**:
+```python
+# 计算sin(30°)
+sine(angle=30, unit="degree")  # → 0.5
+
+# 计算cos(π/2)
+cosine(angle=1.5708, unit="radian")  # → 0
+```
+
+**财务计算**:
+```python
+# 计算单利
+simple_interest(principal=10000, rate=5, time=3)  # → 1500
+
+# 计算复利(月复利)
+compound_interest(principal=10000, rate=5, time=3, frequency=12)  # → 本息合计
+
+# 计算折扣
+discount(original_price=299, discount_percent=20)  # → 239.2
+```
+
+**组合数学**:
+```python
+# 计算阶乘
+factorial(n=5)  # → 120
+
+# 计算排列数
+permutation(n=10, r=3)  # → 720
+
+# 计算组合数
+combination(n=10, r=3)  # → 120
+
+# 判断质数
+prime_check(number=17)  # → True
+```
+
+### 版本演进历史
+
+| 版本 | 发布日期 | 工具数 | 主要更新 |
+|------|----------|--------|----------|
+| V1.0 | 2025-09-01 | 8 | 基础四则运算、幂运算、根运算 |
+| V1.6 | 2025-09-10 | 9 | 新增平均值计算 |
+| V2.0 | 2025-09-15 | 9 | 新增Prompt功能(乘法口诀表等) |
+| V3.0 | 2025-09-20 | 19 | 新增统计、数论运算(10个) |
+| **V4.0** | **2025-09-23** | **29** | **新增三角函数、财务、组合数学(10个)** |
+
+---
+
+**文档更新**: 2025-09-23  
+**当前版本**: V4.0.0  
+**总工具数**: 29个MCP Tools + 3个Prompts
